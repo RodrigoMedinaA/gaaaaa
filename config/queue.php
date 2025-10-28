@@ -24,7 +24,12 @@ return [
     | used by your application. An example configuration is provided for
     | each backend supported by Laravel. You're also free to add more.
     |
+<<<<<<< HEAD
     | Drivers: "sync", "database", "beanstalkd", "sqs", "redis", "failover", "null"
+=======
+    | Drivers: "sync", "database", "beanstalkd", "sqs", "redis",
+    |          "deferred", "failover", "null"
+>>>>>>> e1427f2 (lets go)
     |
     */
 
@@ -72,11 +77,22 @@ return [
             'after_commit' => false,
         ],
 
+<<<<<<< HEAD
+=======
+        'deferred' => [
+            'driver' => 'deferred',
+        ],
+
+>>>>>>> e1427f2 (lets go)
         'failover' => [
             'driver' => 'failover',
             'connections' => [
                 'database',
+<<<<<<< HEAD
                 'sync',
+=======
+                'deferred',
+>>>>>>> e1427f2 (lets go)
             ],
         ],
 

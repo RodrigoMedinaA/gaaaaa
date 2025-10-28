@@ -29,7 +29,11 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
+<<<<<<< HEAD
                 'primary' => Color::Amber,
+=======
+                'primary' => Color::Green,
+>>>>>>> e1427f2 (lets go)
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
@@ -52,8 +56,17 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+<<<<<<< HEAD
             ->authMiddleware([
                 Authenticate::class,
             ]);
+=======
+            ->resourceCreatePageRedirect('index')
+            ->resourceEditPageRedirect('index')
+            ->authMiddleware([
+                Authenticate::class,
+            ]);
+            // ->spa(hasPrefetching: true);
+>>>>>>> e1427f2 (lets go)
     }
 }
