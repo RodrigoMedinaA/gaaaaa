@@ -9,6 +9,8 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
+use Filament\Tables\Columns\TagsColumn;
+
 class SeccionsTable
 {
     public static function configure(Table $table): Table
@@ -19,7 +21,6 @@ class SeccionsTable
                     ->searchable(),
                 TextColumn::make('nombre')
                     ->searchable(),
-                // TextColumn::make('docente_id')
                 TextColumn::make('docente.nombres')
                     ->numeric(),
                 TextColumn::make('modalidad')
@@ -30,13 +31,17 @@ class SeccionsTable
                 TextColumn::make('fecha_fin')
                     ->date()
                     ->sortable(),
-                TextColumn::make('turno')
-                    ->searchable(),
+                TagsColumn::make('dias_estudio')
+                    ->label('Días de Estudio'),
+                // TextColumn::make('turno')
+                //     ->searchable(),
                 TextColumn::make('hora_inicio')
                     ->time()
+                    ->time('h:i A')
                     ->sortable(),
                 TextColumn::make('hora_fin')
                     ->time()
+                    ->time('h:i A')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()

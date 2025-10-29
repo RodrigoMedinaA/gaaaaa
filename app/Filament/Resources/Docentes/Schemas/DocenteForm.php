@@ -30,7 +30,7 @@ class DocenteForm
                 TextInput::make('apellido_materno')
                     ->required(),
                 Select::make('modulo_id')
-                    ->relationship('modulo', 'nombre')
+                    ->relationship('modulos', 'nombre')
                     ->required(),
             ]);
     }

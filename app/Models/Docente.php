@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 use App\Models\Seccion;
+use App\Models\Modulo;
 
 class Docente extends Model
 {
@@ -24,8 +25,9 @@ class Docente extends Model
         return $this->hasMany(Seccion::class);
     }
  
-    public function modulo() : BelongsTo
+    public function modulos() : BelongsToMany # el nombre de la clase, es el nombre de la tabla relacionada
     {
-        return $this->belongsTo(Modulo::class);
+        return $this->belongsToMany(Modulo::class, 'docente_modulo');
     }
+    
 }

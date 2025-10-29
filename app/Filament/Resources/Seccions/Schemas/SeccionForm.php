@@ -24,28 +24,11 @@ class SeccionForm
     {
         return $schema
             ->components([
-                // Select::make('modulo_id')
-                //     ->relationship('modulo', 'nombre')
-                //     ->required()
-                //     ->live()
-                //     ->afterStateUpdated(
-                //         function (Get $get, Set $set, ?string $state) {
-                //             // $state es el ID del módulo seleccionado
-                //             $modulo = Modulo::find($state);
-                            
-                //             // Usamos 'Set' para actualizar el valor del campo 'costo_modulo'
-                //             if ($modulo) {
-                //                 $set('costo_modulo', $modulo->costo);
-                //             } else {
-                //                 $set('costo_modulo', 0);
-                //             }
-                //         }
-                //     ),
                 ToggleButtons::make('modulo_id')
                     ->label('Módulo')
                     ->options(Modulo::all()->pluck('nombre', 'id')) // Así se cargan las opciones
                     ->required()
-                    ->live() // ¡La reactividad se mantiene!
+                    ->live() // Reactivo al cambio
                     ->afterStateUpdated(function (Get $get, Set $set, ?string $state) {
                         // Esta lógica no cambia NADA
                         $modulo = Modulo::find($state);
@@ -55,7 +38,6 @@ class SeccionForm
                             $set('costo_modulo', 0);
                         }
                     })
-                    // Opcional: para mejorar el diseño de los botones
                     ->columns(3) 
                     ->gridDirection('row'),
                 TextInput::make('costo_modulo')
