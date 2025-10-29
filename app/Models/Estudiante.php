@@ -25,6 +25,7 @@ class Estudiante extends Model
         'telefono',
         'direccion',
         'email',
+        'apoderado_id', #foreign key
     ];
 
     public function secciones() : BelongsToMany
