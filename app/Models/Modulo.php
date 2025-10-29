@@ -9,7 +9,7 @@ use App\Models\Docente;
 
 class Modulo extends Model
 {
-    $fillable = [
+    protected $fillable = [
         'nombre',
         'descripcion',
         'costo',

@@ -9,13 +9,16 @@ use Filament\Schemas\Schema;
 
 use Filament\Forms\Components\Select;
 
+use App\Models\Modulo;
+
 class SeccionForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
             ->components([
-                TextInput::make('modulo')
+                Select::make('modulo_id')
+                    ->relationship('modulo', 'nombre')
                     ->required(),
                 TextInput::make('nombre')
                     ->required(),

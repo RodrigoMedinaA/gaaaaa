@@ -4,10 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Models\Docente;
+use App\Models\Estudiante;
+use App\Models\Modulo;
+
 class Seccion extends Model
 {
     protected $fillable = [
-        'modulo', #enum
+        'modulo', #foreign key
         'nombre',
         'docente_id', #foreign key
         'modalidad', #enum
@@ -26,13 +32,18 @@ class Seccion extends Model
         ];
     }
 
-    public function docente()
+    public function docente() : BelongsTo
     {
         return $this->belongsTo(Docente::class);
     }
 
-    public function estudiantes()
+    public function estudiantes() : BelongsToMany
     {
         return $this->belongsToMany(Estudiante::class, 'estudiante_seccion');
+    }
+
+    public function modulo() : BelongsTo
+    {
+        return $this->belongsTo(Modulo::class);
     }
 }
