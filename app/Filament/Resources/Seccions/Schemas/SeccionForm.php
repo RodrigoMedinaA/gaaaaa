@@ -6,10 +6,17 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\ToggleButtons;
 
 use App\Models\Modulo;
+use App\Enums\Modalidad;
+use App\Enums\Turno;
 
 class SeccionForm
 {
@@ -17,26 +24,77 @@ class SeccionForm
     {
         return $schema
             ->components([
-                Select::make('modulo_id')
-                    ->relationship('modulo', 'nombre')
-                    ->required(),
+                // Select::make('modulo_id')
+                //     ->relationship('modulo', 'nombre')
+                //     ->required()
+                //     ->live()
+                //     ->afterStateUpdated(
+                //         function (Get $get, Set $set, ?string $state) {
+                //             // $state es el ID del módulo seleccionado
+                //             $modulo = Modulo::find($state);
+                            
+                //             // Usamos 'Set' para actualizar el valor del campo 'costo_modulo'
+                //             if ($modulo) {
+                //                 $set('costo_modulo', $modulo->costo);
+                //             } else {
+                //                 $set('costo_modulo', 0);
+                //             }
+                //         }
+                //     ),
+                ToggleButtons::make('modulo_id')
+                    ->label('Módulo')
+                    ->options(Modulo::all()->pluck('nombre', 'id')) // Así se cargan las opciones
+                    ->required()
+                    ->live() // ¡La reactividad se mantiene!
+                    ->afterStateUpdated(function (Get $get, Set $set, ?string $state) {
+                        // Esta lógica no cambia NADA
+                        $modulo = Modulo::find($state);
+                        if ($modulo) {
+                            $set('costo_modulo', $modulo->costo);
+                        } else {
+                            $set('costo_modulo', 0);
+                        }
+                    })
+                    // Opcional: para mejorar el diseño de los botones
+                    ->columns(3) 
+                    ->gridDirection('row'),
+                TextInput::make('costo_modulo')
+                    ->label('Costo')
+                    ->prefix('S/.')
+                    ->numeric()
+                    ->disabled()
+                    ->dehydrated(false)
+                    ->required(false),
                 TextInput::make('nombre')
                     ->required(),
                 Select::make('docente_id')
                     ->relationship('docente', 'nombres')
                     ->required(),
-                TextInput::make('modalidad')
+                Select::make('modalidad')
+                    ->options(Modalidad::class)
                     ->required(),
-                TextInput::make('dias_estudio'),
+                Select::make('turno')
+                    ->options(Turno::class)
+                    ->required(),
                 DatePicker::make('fecha_inicio')
                     ->required(),
                 DatePicker::make('fecha_fin')
                     ->required(),
-                TextInput::make('turno')
-                    ->required(),
                 TimePicker::make('hora_inicio')
                     ->required(),
                 TimePicker::make('hora_fin')
+                    ->required(),
+                CheckboxList::make('dias_estudio')
+                    ->options([
+                        'Lunes' => 'Lunes',
+                        'Martes' => 'Martes',
+                        'Miércoles' => 'Miércoles',
+                        'Jueves' => 'Jueves',
+                        'Viernes' => 'Viernes',
+                        'Sábado' => 'Sábado',
+                    ])
+                    // ->columnSpanFull()
+                    ->columns(3)
                     ->required(),
             ]);
     }

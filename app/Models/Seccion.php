@@ -23,6 +23,7 @@ class Seccion extends Model
         'turno', #enum
         'hora_inicio',
         'hora_fin',
+        'modulo_id', #foreign key
     ];
 
     protected function casts(): array

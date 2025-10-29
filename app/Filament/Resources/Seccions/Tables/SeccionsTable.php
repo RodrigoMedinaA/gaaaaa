@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Seccions\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -14,13 +15,13 @@ class SeccionsTable
     {
         return $table
             ->columns([
-                TextColumn::make('modulo')
+                TextColumn::make('modulo.nombre')
                     ->searchable(),
                 TextColumn::make('nombre')
                     ->searchable(),
-                TextColumn::make('docente_id')
-                    ->numeric()
-                    ->sortable(),
+                // TextColumn::make('docente_id')
+                TextColumn::make('docente.nombres')
+                    ->numeric(),
                 TextColumn::make('modalidad')
                     ->searchable(),
                 TextColumn::make('fecha_inicio')
@@ -51,6 +52,7 @@ class SeccionsTable
             ])
             ->recordActions([
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
