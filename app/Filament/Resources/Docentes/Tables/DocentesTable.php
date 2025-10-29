@@ -24,7 +24,7 @@ class DocentesTable
                     ->searchable(),
                 TextColumn::make('apellido_materno')
                     ->searchable(),
-                TextColumn::make('especialidad')
+                TextColumn::make('modulo.nombre')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()

@@ -9,6 +9,8 @@ use Filament\Forms\Components\Select;
 use App\Enums\TipoDocumento;
 use App\Enums\Modulo_seccion;
 
+use App\Models\Modulo;
+
 class DocenteForm
 {
     public static function configure(Schema $schema): Schema
@@ -27,8 +29,8 @@ class DocenteForm
                     ->required(),
                 TextInput::make('apellido_materno')
                     ->required(),
-                Select::make('especialidad')
-                    ->options(Modulo_seccion::class)
+                Select::make('modulo_id')
+                    ->relationship('modulo', 'nombre')
                     ->required(),
             ]);
     }
