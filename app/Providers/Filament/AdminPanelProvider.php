@@ -52,6 +52,11 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->navigationGroups([
+                'Gestión estudiantil',
+                'Gestión académica',
+                'Settings',
+            ])
             ->resourceCreatePageRedirect('index')
             ->resourceEditPageRedirect('index')
             ->authMiddleware([

@@ -26,6 +26,11 @@ class Seccion extends Model
         'modulo_id', #foreign key
     ];
 
+    protected $casts = [
+        'modalidad' => \App\Enums\Modalidad::class,
+        'turno' => \App\Enums\Turno::class,
+    ];
+
     protected function casts(): array
     {
         return [

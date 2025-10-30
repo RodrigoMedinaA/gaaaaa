@@ -52,6 +52,7 @@ class SeccionsTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultGroup('modulo.nombre')
             ->filters([
                 //
             ])

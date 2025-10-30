@@ -14,6 +14,8 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
+use UnitEnum;
+
 class SeccionResource extends Resource
 {
     protected static ?string $model = Seccion::class;
@@ -21,6 +23,8 @@ class SeccionResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::BookOpen;
 
     protected static ?string $recordTitleAttribute = 'nombre';
+
+    protected static string | UnitEnum | null $navigationGroup = 'Gestión Académica';
 
     public static function form(Schema $schema): Schema
     {
@@ -30,6 +34,11 @@ class SeccionResource extends Resource
     public static function table(Table $table): Table
     {
         return SeccionsTable::configure($table);
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 
     public static function getRelations(): array
