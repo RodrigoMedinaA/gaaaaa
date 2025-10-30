@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Estudiantes\Schemas;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\FileUpload;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 use App\Enums\TipoDocumento;
@@ -17,39 +19,52 @@ class EstudianteForm
     {
         return $schema
             ->components([
-                Select::make('tipo_documento')
-                    ->label('Tipo de Documento')
-                    ->options([
-                        TipoDocumento::DNI->value => 'DNI',
-                        TipoDocumento::CARNET_EXTRANJERIA->value => 'Carnet de Extranjería',
+                Section::make()
+                    ->schema([
+                        Select::make('tipo_documento')
+                            ->options(TipoDocumento::class)
+                            ->required(),
+                        TextInput::make('numero_documento')
+                            ->label('Número de Documento')
+                            ->required(),
+                        DatePicker::make('fecha_nacimiento')
+                            ->label('Fecha de Nacimiento')
+                            ->required(),
+                        TextInput::make('nombre')
+                            ->label('Nombres')
+                            ->required(),
+                        TextInput::make('apellido_paterno')
+                            ->label('Apellido Paterno')
+                            ->required(),
+                        TextInput::make('apellido_materno')
+                            ->label('Apellido Materno')
+                            ->required(),
                     ])
-                    ->required(),
-                TextInput::make('nro_documento')
-                    ->maxLength(20)
-                    ->required(),
-                TextInput::make('nombres')
-                    ->required(),
-                TextInput::make('apellido_paterno')
-                    ->required(),
-                TextInput::make('apellido_materno')
-                    ->required(),
-                Select::make('genero')
-                    ->options(TipoGenero::class)
-                    ->required(),
-                Select::make('estado_civil')
-                    ->options(EstadoCivil::class)
-                    ->required(),
-                DatePicker::make('fecha_nacimiento')
-                    ->label('Fecha de Nacimiento')
-                    ->required(),
-                TextInput::make('telefono')
-                    ->tel()
-                    ->required(),
-                TextInput::make('direccion'),
-                TextInput::make('email')
-                    ->label('Email address')
-                    ->email()
-                    ->required(),
+                    ->columns(2),
+                Section::make('Foto')
+                    ->description('Máx. 1024 KB')
+                    ->schema([
+                        FileUpload::make('foto')
+                            ->label('Foto del Estudiante')
+                            ->image()
+                            ->maxSize(1024) // Tamaño máximo en KB
+                            ->directory('estudiantes/fotos')
+                            ->nullable(),
+                    ]),
+                Section::make('Información adicional')
+                    ->schema([
+                        Select::make('genero')
+                            ->options(TipoGenero::class),
+                        Select::make('estado_civil')
+                            ->options(EstadoCivil::class),
+                        TextInput::make('telefono')
+                            ->label('Teléfono')
+                            ->tel(),
+                        TextInput::make('email')
+                            ->label('Correo Electrónico')
+                            ->email(),
+                    ])
+                    ->collapsed(),
             ]);
     }
 }

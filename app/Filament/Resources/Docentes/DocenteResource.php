@@ -19,6 +19,9 @@ use UnitEnum;
 
 class DocenteResource extends Resource
 {
+    #Nombre en la navegación
+    protected static ?string $navigationLabel = 'Docentes';
+    
     protected static ?string $model = Docente::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
