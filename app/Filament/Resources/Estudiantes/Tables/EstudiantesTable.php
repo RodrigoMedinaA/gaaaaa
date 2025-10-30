@@ -10,6 +10,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Carbon\Carbon;
 
@@ -74,7 +75,7 @@ class EstudiantesTable
                             // Si es 'menor', busca fechas POSTERIORES a la fecha de corte
                             return $query->whereDate('fecha_nacimiento', '>', $cutoffDate);
                         }
-                    })
+                    }),
             ])
             ->recordActions([
                 EditAction::make(),

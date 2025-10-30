@@ -23,18 +23,14 @@ class SeccionsTable
                     ->searchable(),
                 TextColumn::make('docente.nombres')
                     ->numeric(),
-                TextColumn::make('modalidad')
-                    ->searchable(),
-                TextColumn::make('fecha_inicio')
-                    ->date()
-                    ->sortable(),
-                TextColumn::make('fecha_fin')
-                    ->date()
-                    ->sortable(),
+                // TextColumn::make('fecha_inicio')
+                //     ->date()
+                //     ->sortable(),
+                // TextColumn::make('fecha_fin')
+                //     ->date()
+                //     ->sortable(),
                 TagsColumn::make('dias_estudio')
                     ->label('Días de Estudio'),
-                // TextColumn::make('turno')
-                //     ->searchable(),
                 TextColumn::make('hora_inicio')
                     ->time()
                     ->time('h:i A')

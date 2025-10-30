@@ -25,6 +25,9 @@ use UnitEnum;
 
 class EstudianteResource extends Resource
 {
+    #Nombre en la navegación
+    protected static ?string $navigationLabel = 'Estudiantes';
+    
     protected static ?string $model = Estudiante::class;
 
     #                                                          Icono de estudiante

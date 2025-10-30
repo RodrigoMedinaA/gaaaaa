@@ -18,6 +18,9 @@ use UnitEnum;
 
 class SeccionResource extends Resource
 {
+    #Nombre en la navegación
+    protected static ?string $navigationLabel = 'Secciones';
+    
     protected static ?string $model = Seccion::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::BookOpen;
