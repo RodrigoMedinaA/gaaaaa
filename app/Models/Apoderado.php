@@ -16,7 +16,6 @@ class Apoderado extends Model
         'apellido_paterno',
         'apellido_materno',
         'telefono',
-        'email',
     ];
 
     public function estudiantes() : HasMany
