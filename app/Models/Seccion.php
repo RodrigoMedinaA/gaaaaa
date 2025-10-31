@@ -13,7 +13,7 @@ use App\Models\Modulo;
 class Seccion extends Model
 {
     protected $fillable = [
-        'modulo', #foreign key
+        'codigo', #foreign key
         'nombre',
         'docente_id', #foreign key
         'modalidad', #enum

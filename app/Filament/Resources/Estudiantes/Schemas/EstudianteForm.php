@@ -51,7 +51,7 @@ class EstudianteForm
                                     ->required(),
                             ]),
                             // ->createOptionModalHeading('Registrar Nuevo Apoderado'),
-                        ]),
+                    ]),
                     
                 Section::make('Foto')
                     ->description('Máx. 1024 KB')
