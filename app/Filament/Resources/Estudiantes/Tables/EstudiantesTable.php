@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Filter;
@@ -30,19 +31,16 @@ class EstudiantesTable
                     ->searchable(),
                 TextColumn::make('apellido_materno')
                     ->searchable(),
-                TextColumn::make('genero')
-                    ->searchable(),
-                TextColumn::make('estado_civil')
-                    ->searchable(),
-                TextColumn::make('fecha_nacimiento')
-                    ->date()
-                    ->sortable(),
-                TextColumn::make('telefono')
-                    ->searchable(),
                 TextColumn::make('direccion')
-                    ->searchable(),
+                    ->default('por completar...')
+                    ->searchable()
+                    ->color(fn (?string $state): string => match (true) {
+                        blank($state) => 'warning',
+                        default => 'red',
+                    }),
                 TextColumn::make('email')
-                    ->label('Email address')
+                    ->label('Correo Electrónico')
+                    ->default('por completar')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()

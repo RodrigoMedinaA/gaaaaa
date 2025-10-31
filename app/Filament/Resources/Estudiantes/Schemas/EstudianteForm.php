@@ -16,6 +16,8 @@ use App\Enums\TipoDocumento;
 use App\Enums\TipoGenero;
 use App\Enums\EstadoCivil;
 
+use App\Models\Apoderado;
+
 class EstudianteForm
 {
     public static function configure(Schema $schema): Schema
@@ -24,53 +26,58 @@ class EstudianteForm
             ->components([
                 Section::make()
                     ->schema(static::getEstudiantesData())
-                    ->columns()
-                // Section::make()
-                //     ->schema([
-                //         Select::make('tipo_documento')
-                //             ->options(TipoDocumento::class)
-                //             ->required(),
-                //         TextInput::make('numero_documento')
-                //             ->label('Número de Documento')
-                //             ->required(),
-                //         DatePicker::make('fecha_nacimiento')
-                //             ->label('Fecha de Nacimiento')
-                //             ->required(),
-                //         TextInput::make('nombre')
-                //             ->label('Nombres')
-                //             ->required(),
-                //         TextInput::make('apellido_paterno')
-                //             ->label('Apellido Paterno')
-                //             ->required(),
-                //         TextInput::make('apellido_materno')
-                //             ->label('Apellido Materno')
-                //             ->required(),
-                //     ])
-                //     ->columns(2),
-                // Section::make('Foto')
-                //     ->description('Máx. 1024 KB')
-                //     ->schema([
-                //         FileUpload::make('foto')
-                //             ->label('Foto del Estudiante')
-                //             ->image()
-                //             ->maxSize(1024) // Tamaño máximo en KB
-                //             ->directory('estudiantes/fotos')
-                //             ->nullable(),
-                //     ]),
-                // Section::make('Información adicional')
-                //     ->schema([
-                //         Select::make('genero')
-                //             ->options(TipoGenero::class),
-                //         Select::make('estado_civil')
-                //             ->options(EstadoCivil::class),
-                //         TextInput::make('telefono')
-                //             ->label('Teléfono')
-                //             ->tel(),
-                //         TextInput::make('email')
-                //             ->label('Correo Electrónico')
-                //             ->email(),
-                //     ])
-                //     ->collapsed(),
+                    ->columns(),
+                Section::make('Apoderado / Responsable')
+                    ->schema([
+                        Select::make('apoderado_id')
+                            ->relationship('apoderado','nombres')
+                            ->preload()
+                            ->placeholder('Asignar un apoderado')
+                            ->nullable()
+                            ->createOptionForm([
+                                Select::make('tipo_documento')
+                                    ->options(TipoDocumento::class)
+                                    ->required(),
+                                TextInput::make('nro_documento')
+                                    ->required(),
+                                TextInput::make('nombres')
+                                    ->required(),
+                                TextInput::make('apellido_paterno')
+                                    ->required(),
+                                TextInput::make('apellido_materno')
+                                    ->required(),
+                                TextInput::make('telefono')
+                                    ->tel()
+                                    ->required(),
+                            ]),
+                            // ->createOptionModalHeading('Registrar Nuevo Apoderado'),
+                        ]),
+                    
+                Section::make('Foto')
+                    ->description('Máx. 1024 KB')
+                    ->schema([
+                        FileUpload::make('foto')
+                            ->label('Foto del Estudiante')
+                            ->image()
+                            ->maxSize(1024) // Tamaño máximo en KB
+                            ->directory('estudiantes/fotos')
+                            ->nullable(),
+                    ])
+                    ->collapsed(),
+                Section::make('Información adicional')
+                    ->schema([
+                        Select::make('genero')
+                            ->options(TipoGenero::class),
+                        Select::make('estado_civil')
+                            ->options(EstadoCivil::class),
+                        TextInput::make('telefono')
+                            ->label('Teléfono')
+                            ->tel(),
+                        TextInput::make('email')
+                            ->label('Correo Electrónico')
+                            ->email(),
+                    ])
+                    ->collapsed(),
             ]);
     }
 
@@ -113,7 +120,8 @@ class EstudianteForm
                 ->searchable()
                 ->required()
                 ->createOptionForm([
-                    TextInput::make('tipo_documento')
+                    Select::make('tipo_documento')
+                        ->options(TipoDocumento::class)
                         ->required(),
                     TextInput::make('nro_documento')
                         ->required(),
