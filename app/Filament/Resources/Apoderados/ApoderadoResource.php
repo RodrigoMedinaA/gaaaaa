@@ -36,6 +36,11 @@ class ApoderadoResource extends Resource
         return ApoderadosTable::configure($table);
     }
 
+        public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function getRelations(): array
     {
         return [
