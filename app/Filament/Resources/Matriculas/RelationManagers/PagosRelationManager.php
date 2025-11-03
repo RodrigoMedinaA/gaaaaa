@@ -10,13 +10,17 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DissociateAction;
 use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
+
+use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
+
 use Filament\Resources\RelationManagers\RelationManager;
+
 use Filament\Schemas\Schema;
+
 use Filament\Tables;
-// use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
@@ -32,22 +36,16 @@ class PagosRelationManager extends RelationManager
     {
         return $schema
             ->components([
-                TextInput::make('codigo')
-                    ->required()
-                    ->disabled() // No editable
-                    ->dehydrated()
-                    ->maxLength(255),
-            
-                DatePicker::make('fecha_vencimiento_cuota')
+                Forms\Components\DatePicker::make('fecha_vencimiento')
                     ->label('Fecha de Vencimiento')
                     ->required(),
                 
-                TextInput::make('monto')
+                Forms\Components\TextInput::make('monto')
                     ->required()
                     ->numeric()
                     ->prefix('S/.'),
 
-                Select::make('estado')
+                Forms\Components\Select::make('estado')
                     ->options([
                         'pendiente' => 'Pendiente',
                         'pagado' => 'Pagado',
@@ -57,10 +55,10 @@ class PagosRelationManager extends RelationManager
                     ->default('pendiente'),
                 
                 // Campos para cuando se realiza el pago
-                DatePicker::make('fecha_pago')
+                Forms\Components\DatePicker::make('fecha_pago')
                     ->label('Fecha de Pago (si aplica)'),
                 
-                Select::make('metodo_pago')
+                Forms\Components\Select::make('metodo_pago')
                     ->options([
                         'efectivo' => 'Efectivo',
                         'yape' => 'Yape',
@@ -80,7 +78,7 @@ class PagosRelationManager extends RelationManager
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true), // Oculto por defecto
 
-                TextColumn::make('fecha_vencimiento_cuota')
+                TextColumn::make('fecha_vencimiento')
                     ->label('Vencimiento')
                     ->date()
                     ->sortable(),
@@ -99,7 +97,8 @@ class PagosRelationManager extends RelationManager
                 TextColumn::make('fecha_pago')
                     ->label('Fecha de Pago')
                     ->date()
-                    ->default('N/A'), // Si es nulo
+                    // ->default('N/A')
+                    , // Si es nulo
             ])
             ->filters([
                 //
@@ -113,17 +112,6 @@ class PagosRelationManager extends RelationManager
                             
                         // 1. Calcular el Monto
                         $data['monto'] = $matricula->seccion->modulo->costo ?? 0;
-
-                        // 2. Calcular la Fecha de Vencimiento
-                        $ultimoPago = $matricula->pagos()->latest('fecha_vencimiento_cuota')->first();
-
-                        if ($ultimoPago) {
-                            $nuevaFecha = $ultimoPago->fecha_vencimiento_cuota->addMonth();
-                        } else {
-                            $nuevaFecha = $matricula->seccion->fecha_inicio ?? now();
-                        }
-                            
-                        $data['fecha_vencimiento_cuota'] = $nuevaFecha;
 
                         $dni = $matricula->estudiante->nro_documento ?? 'SINDNI';
                         $partesMatricula = explode('-', $matricula->codigo);

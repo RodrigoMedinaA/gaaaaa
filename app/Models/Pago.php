@@ -21,6 +21,16 @@ class Pago extends Model
         'fecha_pago',
     ];
 
+    /**
+     * Define los tipos de datos de los atributos.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'fecha_vencimiento' => 'date',
+        'fecha_pago' => 'date',
+    ];
+
     public function matricula(): BelongsTo
     {
         return $this->belongsTo(Matricula::class);

@@ -118,7 +118,7 @@ class EstudianteForm
             Select::make('apoderado_id')
                 ->relationship('apoderado', 'nombres')
                 ->searchable()
-                ->required()
+                // ->required()
                 ->createOptionForm([
                     Select::make('tipo_documento')
                         ->options(TipoDocumento::class)
