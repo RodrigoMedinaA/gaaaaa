@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Matriculas\Schemas;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
+use Filament\Schemas\Components\Section;
 
 use Filament\Schemas\Schema;
 
@@ -17,57 +18,77 @@ use App\Models\Estudiante;
 use App\Models\Seccion;
 use App\Enums\TipoDocumento;
 
+use Filament\Infolists\Components\TextEntry;
+use Squire\Models\Currency;
+use App\Models\Matricula;
+
 class MatriculaForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
             ->components([
-                // Select::make('codigo')
-                //     ->required(),
-                Select::make('estudiante_id')
-                    ->relationship('estudiante', 'nombres')
-                    ->label('Estudiante')
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->live()
-                    ->afterStateUpdated(function (Get $get, Set $set) {
-                        
-                        self::actualizarCodigoPreview($get, $set);
-                    })
-                    ->createOptionForm(self::getEstudianteFormSchema())
-                    ->createOptionAction(function (Action $action) {
-                        return $action
-                            ->modalHeading('Crear Nuevo Estudiante')
-                            ->modalSubmitActionLabel('Crear Estudiante')
-                            ->modalWidth('lg');
-                    }),
-                Select::make('seccion_id')
-                    ->relationship('seccion', 'nombre')
-                    ->label('Seccion')
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->live()
-                    ->afterStateUpdated(function (Get $get, Set $set) {
-                        
-                        self::actualizarCodigoPreview($get, $set);
-                    }),
-                Select::make('estado')
-                    ->options([
-                        'activa'=>'Activa',
-                        'inactiva'=>'Inactiva / Trunca',
-                        'culminada'=>'Culminada',
+                Section::make('Datos de matrícula')
+                    ->schema([
+
+                        Select::make('estudiante_id')
+                            ->relationship('estudiante', 'nombres')
+                            ->label('Estudiante')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->live()
+                            ->afterStateUpdated(function (Get $get, Set $set) {
+                                
+                                self::actualizarCodigoPreview($get, $set);
+                            })
+                            ->createOptionForm(self::getEstudianteFormSchema())
+                            ->createOptionAction(function (Action $action) {
+                                return $action
+                                    ->modalHeading('Crear Nuevo Estudiante')
+                                    ->modalSubmitActionLabel('Crear Estudiante')
+                                    ->modalWidth('lg');
+                            }),
+                        Select::make('seccion_id')
+                            ->relationship('seccion', 'nombre')
+                            ->label('Seccion')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->live()
+                            ->afterStateUpdated(function (Get $get, Set $set) {
+                                
+                                self::actualizarCodigoPreview($get, $set);
+                            }),
+                        Select::make('estado')
+                            ->options([
+                                'activa'=>'Activa',
+                                'inactiva'=>'Inactiva / Trunca',
+                                'culminada'=>'Culminada',
+                            ])
+                            ->required()
+                            ->default('activa'),
+                        TextInput::make('codigo')
+                            ->label('Codigo de matrícula')
+                            ->required()
+                            ->disabled()
+                            ->dehydrated(),
                     ])
-                    ->required()
-                    ->default('activa'),
-                TextInput::make('codigo')
-                    ->label('Codigo de matrícula')
-                    ->required()
-                    ->disabled()
-                    ->dehydrated()
-            ]);
+                    ->columnSpan(['lg' => fn (?Matricula $record) => $record === null ? 3 : 2]),
+                Section::make()
+                    ->schema([
+                        TextEntry::make('created_at')
+                            ->label('Fecha de creación')
+                            ->state(fn (Matricula $record): ?string => $record->created_at?->diffForHumans()),
+        
+                        TextEntry::make('updated_at')
+                            ->label('Fecha de actualización')
+                            ->state(fn (Matricula $record): ?string => $record->updated_at?->diffForHumans()),
+                    ])
+                    ->columnSpan(['lg' => 1])
+                    ->hidden(fn (?Matricula $record) => $record === null),
+            ])
+            ->columns(3);
     }
 
     private static function actualizarCodigoPreview(Get $get, Set $set): void

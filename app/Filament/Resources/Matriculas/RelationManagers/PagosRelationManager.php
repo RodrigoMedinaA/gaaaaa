@@ -40,10 +40,10 @@ class PagosRelationManager extends RelationManager
                     ->label('Fecha de Vencimiento')
                     ->required(),
                 
-                Forms\Components\TextInput::make('monto')
-                    ->required()
-                    ->numeric()
-                    ->prefix('S/.'),
+                // Forms\Components\TextInput::make('monto')
+                //     ->required()
+                //     ->numeric()
+                //     ->prefix('S/.'),
 
                 Forms\Components\Select::make('estado')
                     ->options([
@@ -75,8 +75,7 @@ class PagosRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('codigo')
                     ->label('Cód. Pago')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true), // Oculto por defecto
+                    ->searchable(),
 
                 TextColumn::make('fecha_vencimiento')
                     ->label('Vencimiento')
