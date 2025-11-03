@@ -19,6 +19,7 @@ class SeccionsTable
             ->columns([
                 TextColumn::make('modulo.nombre')
                     ->searchable(),
+                TextColumn::make('codigo'),
                 TextColumn::make('nombre')
                     ->searchable(),
                 TextColumn::make('docente.nombres')
