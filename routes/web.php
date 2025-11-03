@@ -1,11 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;// routes/web.php
+// routes/web.php
+use App\Http\Controllers\MatriculaPdfController;
 
-<<<<<<< HEAD
-Route::get('/', function () {
-=======
+
+Route::middleware(['web', 'auth']) // ajusta a tu proyecto
+    ->get('/matriculas/{matricula}/pdf', MatriculaPdfController::class)
+    ->name('matriculas.pdf');
+
+
 Route::get(' ',function () { #Configurado para que la ruta por defecto sea la principal
->>>>>>> e1427f2 (lets go)
-    return view('welcome');
+    return redirect('/admin');
 });
