@@ -74,6 +74,7 @@ class MatriculaForm
                             ->disabled()
                             ->dehydrated(),
                     ])
+                    ->columns(2)
                     ->columnSpan(['lg' => fn (?Matricula $record) => $record === null ? 3 : 2]),
                 Section::make()
                     ->schema([
