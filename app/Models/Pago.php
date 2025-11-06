@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Enums\EstadoPago;
+
 class Pago extends Model
 {
     use HasFactory;
@@ -19,6 +21,7 @@ class Pago extends Model
         'fecha_vencimiento', # A editar
         'metodo_pago',
         'fecha_pago',
+        'evidencia',
     ];
 
     /**
@@ -29,6 +32,7 @@ class Pago extends Model
     protected $casts = [
         'fecha_vencimiento' => 'date',
         'fecha_pago' => 'date',
+        'estado' => EstadoPago::class,
     ];
 
     public function matricula(): BelongsTo

@@ -15,8 +15,14 @@ use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\FileUpload;
 
 use Filament\Resources\RelationManagers\RelationManager;
+
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+
+use Carbon\Carbon;
 
 use Filament\Schemas\Schema;
 
@@ -24,6 +30,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
+
+use App\Enums\EstadoPago;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,25 +46,21 @@ class PagosRelationManager extends RelationManager
             ->components([
                 Forms\Components\DatePicker::make('fecha_vencimiento')
                     ->label('Fecha de Vencimiento')
+                    // ->disabled()
                     ->required(),
                 
-                // Forms\Components\TextInput::make('monto')
-                //     ->required()
-                //     ->numeric()
-                //     ->prefix('S/.'),
-
                 Forms\Components\Select::make('estado')
-                    ->options([
-                        'pendiente' => 'Pendiente',
-                        'pagado' => 'Pagado',
-                        'anulado' => 'Anulado',
-                    ])
+                    ->options(EstadoPago::class)
                     ->required()
-                    ->default('pendiente'),
+                    ->default(EstadoPago::PENDIENTE)
+                    ->disabled()
+                    ->live(),
                 
                 // Campos para cuando se realiza el pago
                 Forms\Components\DatePicker::make('fecha_pago')
-                    ->label('Fecha de Pago (si aplica)'),
+                    ->label('Fecha de Pago (si aplica)')
+                    ->nullable()
+                    ->disabled(),
                 
                 Forms\Components\Select::make('metodo_pago')
                     ->options([
@@ -64,7 +68,27 @@ class PagosRelationManager extends RelationManager
                         'yape' => 'Yape',
                         'plin' => 'Plin',
                         'transferencia' => 'Transferencia',
-                    ]),
+                    ])
+                    ->visible(fn (Get $get): bool => $get('evidencia') !== null)
+                    ->nullable(),
+                FileUpload::make('evidencia')
+                    ->label('Adjuntar Evidencia de Pago')
+                    ->image() // Si solo quieres imágenes, o quita para cualquier archivo
+                    ->directory('pagos-evidencias') // Carpeta donde se guardarán los archivos en 'storage/app/public'
+                    ->disk('public') // Usa el disco 'public' (requiere 'php artisan storage:link')
+                    ->nullable()
+                    ->columnSpanFull() // Ocupa todo el ancho
+                    ->live() // ¡IMPORTANTE! Hace que el campo sea reactivo
+                    // --- LÓGICA REACTIVA: SI SE SUBE EVIDENCIA ---
+                    ->afterStateUpdated(function (Get $get, Set $set, ?string $state) {
+                        if ($state) { // Si hay un archivo (string con la ruta)
+                            $set('estado', EstadoPago::PAGADO); // Cambia el estado a 'Pagado'
+                            $set('fecha_pago', Carbon::now()->format('Y-m-d')); // Establece la fecha actual
+                        } else { // Si se quita el archivo
+                            $set('estado', EstadoPago::PENDIENTE); // Vuelve al estado Pendiente
+                            $set('fecha_pago', null); // Borra la fecha de pago
+                        }
+                    }),
             ]);
     }
 
@@ -73,6 +97,14 @@ class PagosRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('codigo')
             ->columns([
+                Tables\Columns\ImageColumn::make('evidencia')
+                    ->label('Evidencia')
+                    ->square() // Hace que la imagen se vea cuadrada
+                    ->extraImgAttributes(fn (Model $record): array => [
+                        'alt' => $record->codigo,
+                        'loading' => 'lazy',
+                        'title' => 'Evidencia de pago',
+                    ]),
                 TextColumn::make('codigo')
                     ->label('Cód. Pago')
                     ->searchable(),

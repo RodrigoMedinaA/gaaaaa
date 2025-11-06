@@ -29,6 +29,8 @@ class Seccion extends Model
     protected $casts = [
         'modalidad' => \App\Enums\Modalidad::class,
         'turno' => \App\Enums\Turno::class,
+        'fecha_inicio' => 'date',
+        'fecha_fin' => 'date',
     ];
 
     protected function casts(): array
