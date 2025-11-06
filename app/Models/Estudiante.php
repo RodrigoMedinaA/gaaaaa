@@ -28,6 +28,10 @@ class Estudiante extends Model
         'apoderado_id', #foreign key
     ];
 
+    protected $casts = [
+        'fecha_nacimiento' => 'date', // o 'immutable_date'
+    ];
+
     public function secciones() : BelongsToMany
     {
         return $this->belongsToMany(Seccion::class, 'estudiante_seccion');

@@ -155,7 +155,7 @@ class PagosRelationManager extends RelationManager
                     
                         return $data;
                     }),
-                AssociateAction::make(),
+                // AssociateAction::make(),
             ])
             ->recordActions([
                 EditAction::make(),

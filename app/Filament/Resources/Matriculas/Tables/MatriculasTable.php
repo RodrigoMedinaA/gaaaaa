@@ -10,54 +10,83 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\IconColumn;
+
+use Filament\Actions\Action;
+
 
 class MatriculasTable
 {
     public static function configure(Table $table): Table
     {
         return $table
+            // IMPORTANTe en Filament v4: usa modifyQueryUsing para evitar N+1
+            ->modifyQueryUsing(fn ($query) => $query->with(['estudiante', 'seccion']))
+
             ->columns([
                 TextColumn::make('codigo')
                     ->searchable(),
+
                 TextColumn::make('estudiante.nombres')
-                    ->numeric()
                     ->sortable(),
+
+                // OPCIÓN B: Ícono justo al costado del alumno (déjalo si quieres esta UI)
+                IconColumn::make('descargar_pdf')
+                    ->label('') // sin label = compacto
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->tooltip('Descargar PDF')
+                    ->url(fn ($record) => route('matriculas.pdf', $record))
+                    ->openUrlInNewTab(),
+
                 TextColumn::make('seccion.nombre')
-                    ->numeric()
                     ->sortable(),
                 BadgeColumn::make('estado'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+
             ->filters([
                 SelectFilter::make('estudiante')
-                    ->relationship('estudiante', 'nombres') // Busca en la relación 'estudiante'
-                    ->searchable() // <-- Permite escribir para buscar
+                    ->relationship('estudiante', 'nombres')
+                    ->searchable()
                     ->preload()
                     ->label('Estudiante'),
 
                 SelectFilter::make('seccion')
-                    ->relationship('seccion', 'nombre') // Busca en la relación 'seccion'
-                    ->searchable() // <-- Permite escribir para buscar
+                    ->relationship('seccion', 'nombre')
+                    ->searchable()
                     ->preload()
                     ->label('Sección'),
-                SelectFilter::make('estado')
-                    ->options([
-                        'activa' => 'Activa',
-                        'inactiva' => 'Inactiva / Trunca',
-                        'culminada' => 'Culminada',
-                    ])
+
+                SelectFilter::make('estado')->options([
+                    'activa'    => 'Activa',
+                    'inactiva'  => 'Inactiva / Trunca',
+                    'culminada' => 'Culminada',
+                ]),
             ])
+
             ->recordActions([
                 EditAction::make(),
+
+                // OPCIÓN A: botón "PDF" en la columna de acciones
+                Action::make('pdf')
+    ->label('PDF')
+    ->icon('heroicon-o-arrow-down-tray')
+    ->tooltip('Ver/descargar PDF de matrícula')
+    ->url(fn ($record) => route('matriculas.pdf', $record)) // sin ?download
+    ->openUrlInNewTab(),
+    
+
                 DeleteAction::make(),
             ])
+
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
