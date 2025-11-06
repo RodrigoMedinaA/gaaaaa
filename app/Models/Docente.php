@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Seccion;
 use App\Models\Modulo;
 
+
 class Docente extends Model
 {
     protected $fillable = [
@@ -28,6 +29,11 @@ class Docente extends Model
     public function modulos() : BelongsToMany # el nombre de la clase, es el nombre de la tabla relacionada
     {
         return $this->belongsToMany(Modulo::class, 'docente_modulo');
+    }
+    // Accessor opcional para mostrar nombre completo en selects/listas
+    public function getNombreCompletoAttribute(): string
+    {
+        return trim("{$this->nombres} {$this->apellido_paterno} {$this->apellido_materno}");
     }
     
 }
