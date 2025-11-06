@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 use App\Models\Estudiante;
 use App\Models\Seccion;
+use App\Enums\EstadoMatricula;
 use Illuminate\Support\Str;
 
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +20,11 @@ class Matricula extends Model
         'estudiante_id',
         'seccion_id',
         'estado',
+    ];
+
+    protected $casts = [
+        // ¡Esta es la clave!
+        'estado' => EstadoMatricula::class,
     ];
 
     public function estudiante(): BelongsTo

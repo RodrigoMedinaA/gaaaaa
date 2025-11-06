@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Matriculas\Schemas;
 
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Components\DatePicker;
 use Filament\Schemas\Components\Section;
 
@@ -17,6 +18,7 @@ use Filament\Schemas\Components\Utilities\Set;
 use App\Models\Estudiante;
 use App\Models\Seccion;
 use App\Enums\TipoDocumento;
+use App\Enums\EstadoMatricula;
 
 use Filament\Infolists\Components\TextEntry;
 use Squire\Models\Currency;
@@ -60,14 +62,10 @@ class MatriculaForm
                                 
                                 self::actualizarCodigoPreview($get, $set);
                             }),
-                        Select::make('estado')
-                            ->options([
-                                'activa'=>'Activa',
-                                'inactiva'=>'Inactiva / Trunca',
-                                'culminada'=>'Culminada',
-                            ])
-                            ->required()
-                            ->default('activa'),
+                        ToggleButtons::make('estado')
+                            ->options(EstadoMatricula::class)
+                            ->inline()
+                            ->required(),
                         TextInput::make('codigo')
                             ->label('Codigo de matrícula')
                             ->required()

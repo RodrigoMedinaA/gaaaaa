@@ -3,7 +3,6 @@
 namespace App\Enums;
 
 use Filament\Support\Contracts\HasColor;
-use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
 enum Modalidad: string
@@ -27,15 +26,6 @@ enum Modalidad: string
             self::PRESENCIAL => 'success',
             self::VIRTUAL => 'primary',
             self::SEMIPRESENCIAL => 'warning',
-        };
-    }
-
-    public function getIcon(): ?string
-    {
-        return match ($this) {
-            self::PRESENCIAL => 'heroicon-o-academic-cap',
-            self::VIRTUAL => 'heroicon-o-computer-desktop',
-            self::SEMIPRESENCIAL => 'heroicon-o-book-open',
         };
     }
 }

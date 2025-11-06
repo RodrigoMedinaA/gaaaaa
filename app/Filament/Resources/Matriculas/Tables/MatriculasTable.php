@@ -25,12 +25,7 @@ class MatriculasTable
                 TextColumn::make('seccion.nombre')
                     ->numeric()
                     ->sortable(),
-                BadgeColumn::make('estado')
-                    ->colors([
-                        'success' => 'activa',
-                        'danger' => 'inactiva',
-                        'info' => 'culminada',
-                    ]),
+                BadgeColumn::make('estado'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
