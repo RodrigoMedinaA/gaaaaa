@@ -1,0 +1,19 @@
+﻿try { . "c:\Users\jordonez\AppData\Local\Programs\Microsoft VS Code\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+composer require barryvdh/laravel-dompdf
+php artisan vendor:publish --provider="Barryvdh\DomPDF\ServiceProvider"
+
+php artisan optimize:clear
+
+git pull
+git status
+git add .
+git commit -m "matricula_en_pdf"
+git pull
+git status
+git rebase --continue
+git add .
+git status
+git commit -m "rebasing_&_fixing"
+git rebase --continue
+git pull
+git push
