@@ -83,25 +83,6 @@ return [
             ]) : [],
         ],
 
-<<<<<<< HEAD
-        'pgsql' => [ // la app (app_user)
-            'driver' => 'pgsql',
-            'host' => env('DB_HOST','127.0.0.1'),
-            'port' => env('DB_PORT','5432'),
-            'database' => env('DB_DATABASE','cetpro_db'),
-            'username' => env('DB_USERNAME','app_user'),
-            'password' => env('DB_PASSWORD','app123'),
-            'search_path' => 'cetpro,public',
-        ],
-        'pgsql_admin' => [ // para migraciones (admin_user)
-            'driver' => 'pgsql',
-            'host' => env('DB_HOST','127.0.0.1'),
-            'port' => env('DB_PORT','5432'),
-            'database' => env('DB_DATABASE','cetpro_db'),
-            'username' => env('DB_ADMIN_USERNAME','admin_user'),
-            'password' => env('DB_ADMIN_PASSWORD','admin123'),
-            'search_path' => 'cetpro,public',
-=======
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DB_URL'),
@@ -115,7 +96,6 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => 'prefer',
->>>>>>> e1427f2 (lets go)
         ],
 
         'sqlsrv' => [

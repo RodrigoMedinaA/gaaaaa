@@ -27,12 +27,8 @@ return [
     | same cache driver to group types of items stored in your caches.
     |
     | Supported drivers: "array", "database", "file", "memcached",
-<<<<<<< HEAD
-    |                    "redis", "dynamodb", "octane", "null"
-=======
     |                    "redis", "dynamodb", "octane",
     |                    "failover", "null"
->>>>>>> e1427f2 (lets go)
     |
     */
 
@@ -95,8 +91,6 @@ return [
             'driver' => 'octane',
         ],
 
-<<<<<<< HEAD
-=======
         'failover' => [
             'driver' => 'failover',
             'stores' => [
@@ -105,7 +99,6 @@ return [
             ],
         ],
 
->>>>>>> e1427f2 (lets go)
     ],
 
     /*
