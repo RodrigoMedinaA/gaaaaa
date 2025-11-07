@@ -48,20 +48,22 @@ class PagosRelationManager extends RelationManager
                     ->label('Fecha de Vencimiento')
                     // ->disabled()
                     ->required(),
-                
+
                 Forms\Components\Select::make('estado')
                     ->options(EstadoPago::class)
                     ->required()
                     ->default(EstadoPago::PENDIENTE)
                     ->disabled()
-                    ->live(),
-                
+                    ->live()
+                    ->dehydrated(true),
+
                 // Campos para cuando se realiza el pago
                 Forms\Components\DatePicker::make('fecha_pago')
                     ->label('Fecha de Pago (si aplica)')
                     ->nullable()
-                    ->disabled(),
-                
+                    ->disabled()
+                    ->dehydrated(true),
+
                 Forms\Components\Select::make('metodo_pago')
                     ->options([
                         'efectivo' => 'Efectivo',
@@ -155,7 +157,7 @@ class PagosRelationManager extends RelationManager
                     
                         return $data;
                     }),
-                // AssociateAction::make(),
+                AssociateAction::make(),
             ])
             ->recordActions([
                 EditAction::make(),

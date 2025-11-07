@@ -88,7 +88,7 @@
             <td class="w-25"><span class="label">TELÉFONO</span><br>{{ $institucion['telefono'] }}</td>
             <td class="w-25"><span class="label">CORREO</span><br>{{ $institucion['email'] }}</td>
             <td class="w-25"><span class="label">CÓDIGO MATRÍCULA</span><br>{{ $matricula->codigo }}</td>
-            <td class="w-25"><span class="label">ESTADO</span><br>{{ ucfirst($matricula->estado) }}</td>
+            <td class="w-25"><span class="label">ESTADO</span><br>{{ $matricula->estado?->getLabel() }}</td>
         </tr>
     </table>
 
