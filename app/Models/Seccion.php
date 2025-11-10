@@ -31,13 +31,27 @@ class Seccion extends Model
         'turno' => \App\Enums\Turno::class,
         'fecha_inicio' => 'date',
         'fecha_fin' => 'date',
+        'dias_estudio' => 'array',
     ];
 
-    protected function casts(): array
+    // Se muestra en el listado de secciones al crear Matricula
+    public function getNombreCompletoAttribute(): string
     {
-        return [
-            'dias_estudio' => 'array',
-        ];
+        // 1. Obtiene los días (ahora sí es un array)
+        $dias = is_array($this->dias_estudio) ? implode(', ', $this->dias_estudio) : '';
+        
+        // 2. Obtiene la hora
+        $hora = $this->hora_inicio ?? '';
+        
+        // 3. Devuelve el nombre completo
+        return "{$this->nombre} ({$dias} / {$hora})";
+    }
+
+    // Se muestra de titulo al momento de listar los alumnos de una Seccion
+    public function getNombreSoloAttribute(): string
+    {
+        // 3. Devuelve el nombre completo
+        return "{$this->nombre}";
     }
 
     public function docente() : BelongsTo

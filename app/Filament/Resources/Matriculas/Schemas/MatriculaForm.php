@@ -52,7 +52,8 @@ class MatriculaForm
                                     ->modalWidth('lg');
                             }),
                         Select::make('seccion_id')
-                            ->relationship('seccion', 'nombre')
+                            // ->relationship('seccion', 'nombre_completo')
+                            ->options(Seccion::all()->pluck('nombre_completo', 'id'))
                             ->label('Seccion')
                             ->searchable()
                             ->preload()
@@ -108,19 +109,15 @@ class MatriculaForm
             return;
         }
 
-        // --- LÓGICA DE CÓDIGO ACTUALIZADA ---
-        $codigoSeccion = $seccion->codigo; // ej: S-3-112025-0ZAO
-        $dni = $estudiante->nro_documento ?? 'SIN-DNI'; // Asegúrate que 'nro_documento' sea la columna
-
+        $codigoSeccion = $seccion->codigo; // ej: 112025-0ZAO
+        $dni = $estudiante->nro_documento ?? 'SIN-DNI';
         $codigoPreview = "{$codigoSeccion}-{$dni}";
-        // --- FIN LÓGICA DE CÓDIGO ACTUALIZADA ---
-        
         $set('codigo', $codigoPreview);
     }
 
     private static function getEstudianteFormSchema(): array
     {
-        // Copia los campos esenciales de tu EstudianteForm.php aquí
+        // Modal de creación de estudiante dentro de matrícula
         return [
             Select::make('tipo_documento')->options(TipoDocumento::class)->required(),
             TextInput::make('nro_documento')->required()->maxLength(25),

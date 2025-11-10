@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Seccions;
 
+use App\Filament\Resources\Secciones\Pages;
 use App\Filament\Resources\Seccions\Pages\CreateSeccion;
 use App\Filament\Resources\Seccions\Pages\EditSeccion;
 use App\Filament\Resources\Seccions\Pages\ListSeccions;
+use App\Filament\Resources\Seccions\Pages\VerMatriculados;
 use App\Filament\Resources\Seccions\Schemas\SeccionForm;
 use App\Filament\Resources\Seccions\Tables\SeccionsTable;
 use App\Models\Seccion;
@@ -57,6 +59,7 @@ class SeccionResource extends Resource
             'index' => ListSeccions::route('/'),
             'create' => CreateSeccion::route('/create'),
             'edit' => EditSeccion::route('/{record}/edit'),
+            'ver-matriculados' => VerMatriculados::route('/{record}/ver-matriculados')
         ];
     }
 }
