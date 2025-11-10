@@ -14,6 +14,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use App\Enums\Rol;
+use Filament\Facades\Filament;
 
 class UsuarioResource extends Resource
 {
@@ -47,5 +49,46 @@ class UsuarioResource extends Resource
             'create' => CreateUsuario::route('/create'),
             'edit' => EditUsuario::route('/{record}/edit'),
         ];
+    }
+
+    public static function canViewAny(): bool
+    {
+        $user = Filament::auth()->user();
+
+        // Si guardas el rol como enum:
+        return $user?->rol === Rol::ADMIN;
+
+        // Si guardas el rol como string:
+        // return $user?->rol === 'admin';
+    }
+
+    public static function canCreate(): bool
+    {
+        $user = Filament::auth()->user();
+        return $user?->rol === Rol::ADMIN; // o 'admin'
+    }
+
+    public static function canEdit($record): bool
+    {
+        $user = Filament::auth()->user();
+        return $user?->rol === Rol::ADMIN; // o 'admin'
+    }
+
+    public static function canDelete($record): bool
+    {
+        $user = Filament::auth()->user();
+        return $user?->rol === Rol::ADMIN; // o 'admin'
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        $user = Filament::auth()->user();
+        return $user?->rol === Rol::ADMIN; // o 'admin'
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = Filament::auth()->user();
+        return $user?->rol === Rol::ADMIN; // o 'admin'
     }
 }
